@@ -1,21 +1,21 @@
 # Cinco aspectos prioritários de engenharia
 
-## 1. Consistência das quantidades
+## 1. Arquitetura organizada e facilidade de evolução
 
-A disponibilidade precisa corresponder ao total menos as reservas e os bloqueios ativos. As operações validam o saldo dentro de uma transação de escrita iniciada antes da leitura, com rollback em falhas. Saldos derivados são calculados e restrições locais são reforçadas no banco. Essa propriedade protege a regra central do sistema.
+Considero importante que a solução tenha uma estrutura clara, com responsabilidades bem definidas e regras de negócio centralizadas. Essa organização facilita a manutenção e permite incorporar novos requisitos, como expiração de reservas, liberação parcial e novos tipos de movimentação. Priorizo uma arquitetura proporcional ao problema, que reduza o impacto das mudanças e permita ampliar o sistema de maneira segura.
 
-## 2. Testes que reproduzem falhas relevantes
+## 2. Facilidade de diagnóstico
 
-Além do caminho de sucesso, a suíte testa saldo insuficiente, entradas inválidas, duas reservas simultâneas, liberações concorrentes, rollback após gravação e persistência após reiniciar a aplicação. Testes usam SQLite em arquivo e conexões independentes para reproduzir o comportamento escolhido. Testes React em DOM simulado verificam a integração com a API real. A suíte adicional de navegador foi preparada, mas sua execução ficou bloqueada no ambiente de geração.
+Para mim, uma solução de qualidade precisa permitir identificar e compreender seus problemas. Mensagens de erro claras, logs úteis e respostas padronizadas ajudam a distinguir uma operação inválida, como uma reserva acima do saldo disponível, de uma falha técnica. Essa capacidade reduz o tempo de investigação, facilita a correção de problemas e contribui para a continuidade do funcionamento do sistema.
 
-## 3. Responsabilidades claras
+## 3. Integridade e confiabilidade do estoque
 
-Rotas adaptam HTTP, schemas validam contratos, services coordenam regras e transações e repositories executam acesso a dados. No frontend, chamadas HTTP e estado são separados dos componentes. A separação facilita explicar, localizar e modificar uma regra sem introduzir muitas abstrações.
+A correção das quantidades é indispensável em um sistema de estoque. O saldo disponível deve corresponder ao total menos as reservas e os bloqueios ativos, inclusive quando existem operações simultâneas. Também considero essencial que falhas não deixem alterações parcialmente aplicadas. Por isso, valorizo validações, transações e mecanismos de recuperação que preservem os dados, além de cuidados para impedir que liberações repetidas devolvam unidades em duplicidade.
 
-## 4. Execução e diagnóstico reproduzíveis
+## 4. Testes automatizados
 
-Instruções para Windows, versões de dependências, arquivos de exemplo de configuração, banco criado automaticamente e dados opcionais facilitam reproduzir a solução. Erros de domínio têm códigos previsíveis. Falhas inesperadas de banco são registradas no servidor sem expor SQL ao usuário. Os testes ficam isolados dos dados de uso local.
+Vejo os testes como uma forma de demonstrar que as regras funcionam e de sustentar a evolução do projeto. Priorizo cenários relevantes, como saldo insuficiente, quantidades inválidas, reservas concorrentes e falhas durante uma gravação. Além de identificar defeitos, esses testes documentam o comportamento esperado e oferecem segurança para corrigir, reorganizar e ampliar a solução, reduzindo o risco de comprometer funcionalidades existentes.
 
-## 5. Evolução baseada em limites conhecidos
+## 5. Clareza do código e documentação
 
-O projeto explicita que escritas SQLite são serializadas, que entradas e saídas ainda não possuem auditoria completa e que criações não têm idempotência. Esses limites orientam melhorias concretas: migrações, trilha de movimentações, controle de acesso, paginação, observabilidade e, se necessário, outro banco com uma estratégia de concorrência apropriada.
+Considero importante que o projeto seja compreensível para outras pessoas que precisem mantê-lo ou modificá-lo. Por isso, valorizo nomes claros e autoexplicativos para variáveis, funções e classes, além de documentação que explique as regras de negócio e as decisões técnicas. Comentários devem esclarecer trechos que exigem contexto, e a documentação precisa acompanhar as mudanças no código. Esses cuidados reduzem ambiguidades, facilitam a continuidade do trabalho e diminuem o risco de uma alteração comprometer comportamentos importantes da solução.propriada.
